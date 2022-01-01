@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@model NewsSiteTest.Models.UserSessionDetails
+
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,6 +9,15 @@
     <title>@ViewBag.Title - Test</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+        .textGap{
+            padding-left:1.5em;
+            padding-top:1em;
+            color:azure;
+            font-weight:normal;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -23,8 +35,17 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    
+
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("Sign Up", "SignUp", "Home")</li>
+                    <li>@Html.LabelFor(model => model.UserName, new { @class="textGap" } )</li>
+                </ul>
+                
+                
             </div>
+           
         </div>
     </div>
 

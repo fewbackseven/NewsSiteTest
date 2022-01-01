@@ -9,8 +9,10 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no " />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+
+
     <title>Sign up | News Site</title>
 
     @*-----------js and Css files------------------*@
@@ -32,7 +34,6 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
-
     <style>
         body {
             color: #fff;
@@ -43,7 +44,8 @@
         .form-control {
             min-height: 41px;
             box-shadow: none;
-            border-color: #e1e4e5;
+            /*border-color: #e1e4e5;*/
+            border-color:darkgray;
             font-size: 14px;
         }
 
@@ -116,97 +118,107 @@
                 }
     </style>
 
+
 </head>
 <body>
-
     <div>
         <a href="@Url.Action("Index" , "Home")">
             <img style="padding-left:3em" src="~/Content/Images/yamaha_Logo.png" alt="Brand" width="250" height="85" />
         </a>
-        <div class="signup-form">
-            <form>
+    </div>
+    <div class="signup-form">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
                 <h2>Sign Up</h2>
                 <p>It's free and only takes a minute.</p>
-                <hr>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group">
-                    @Html.TextBoxFor(m => m.sFullName, new { @class = "form-control", required = "required", id = "txtLoginName", @maxlength = "50", @placeholder = "Full Name" })
-                </div>
-                <div class="form-group">
-                    @Html.TextBoxFor(m => m.sEmailId, new { @class = "form-control", required = "required", id = "txtEmailId", @maxlength = "50", @placeholder = "Email ID" })
-                </div>
-                <div class="form-group">
-                    @Html.TextBoxFor(m => m.sMobileNumber, new { @type = "tel", @class = "form-control", required = "required", id = "txtMobileNumber", @maxlength = "10", @placeholder = "Mobile Number" })
-                </div>
-                <div class="form-group">
-                    @Html.PasswordFor(m => m.sPassWord, new { @class = "form-control", autocomplete = "off", required = "required", id = "txtPassWord", @maxlength = "20", @placeholder = "Password" })
-                    @*<input name="txtPassword" type="password" id="txtPassword" class="form-control" placeholder="Password" autocomplete="off" />*@
-                </div>
-                <div class="form-group">
-                    <input type="password" id="cnfPassWord" class="form-control" name="sCnfPassWord" placeholder="Confirm Password" required="required">
+                    @Html.LabelFor(model => model.sFullName, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.sFullName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.sFullName, "", new { @class = "text-danger" })
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary btn-block btn-lg" value="Create" onclick="ValidateLogin()">Sign Up</button>
+                    @Html.LabelFor(model => model.sEmailId, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.sEmailId, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.sEmailId, "", new { @class = "text-danger" })
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label>__________________________________________________________</label>
-                </div>
-                <div >                  
-                    <label id="lblMessage" class="alert alert-danger hidden"></label>
+                    @Html.LabelFor(model => model.sMobileNumber, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.EditorFor(model => model.sMobileNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.sMobileNumber, "", new { @class = "text-danger" })
+                    </div>
                 </div>
 
-                <div class="form-group" style="padding-left:2em">
-                    <input type="checkbox" id="GetEmails">
-                    <label>&nbsp;&nbsp;Sign up for YAMAHA exclusive newsletter</label>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.sPassWord, htmlAttributes: new { @class = "control-label col-md-3" })
+                    <div class="col-md-9">
+                        @Html.PasswordFor(model => model.sPassWord, new { htmlAttributes = new { @class = "form-control" , id="txtPassWord" } })
+                        @Html.ValidationMessageFor(model => model.sPassWord, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-                <p class="small text-center">By clicking the Sign Up button, you agree to our <br><a href="#">Terms &amp; Conditions</a>, and <a href="#">Privacy Policy</a>.</p>
-            </form>
-            <div class="text-center">Already have an account? <a href="@Url.Action("Login", "Home") ">Sign In here</a></div>
-        </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-3">Confirm Password</label>
+                    <div class="col-md-9">
+                        @Html.PasswordFor(model => model.sCnfPassWord, new { htmlAttributes = new { @class = "form-control", id = "txtCnfPassWord", onblur = "chkPassWord()" } })
+                        @Html.ValidationMessageFor(model => model.sCnfPassWord, "", new { @class="text-danger"})
+                        @*<input type="password" id="txtCnfPassWord" autocomplete="off" class="form-control" />*@
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-4 col-md-8">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-1 col-md-11">
+                        <label>___________________________________________________</label>
+                    </div>
+                </div>
+
+                <div class="text-center">Already have an account? <a href="@Url.Action("Login", "Home") ">Sign In here</a></div>
+                <br />
+                @*<div class="form-group">
+                        <div class="col-md-offset-4 col-md-7">
+                            @Html.ActionLink("Back to Home", "Index")
+                        </div>
+                    </div>*@
+            </div>
+        }
+
+
     </div>
 
-    @*<script type="text/javascript">
-        function ValidateLogin() {
-           var data = {
-               sFullName: $('#txtLoginName').val(),
-               sEmailId: $('#txtEmailId').val(),
-               sMobileNumber: $('#txtMobileNumber').val(),
-               sPassWord: $('#txtPassWord').val()
-            };
-            
-            $.ajax({
-                url: '@Url.Action("About", "Home")',
-                type: "POST",              
-                data: data,
-                contentType: "application/json; charset=utf-8",
-                async: false,
-            });
+    <script type="text/javascript">
+        $(document).ready(function () {
+           
+        });
 
-            if ($('#txtLoginName').val() == "") {
-                $('#lblMessage').text('Enter Valid Full Name').show;
-                return false;
+       function chkPassWord() {
+            var n = $("#txtCnfPassWord").val();
+            var m = $("#txtPassWord").val();
+
+            if (n == m) {
+                alert("Passwords didnt Match!");
             }
+        };
 
-            if ($('#txtEmailId').val() == "") {
-                $('#lblMessage').text('Enter Valid Email ID').show;
-                return false;
-            }
-
-            if ($('#txtMobileNumber').val() == "") {
-                $('#lblMessage').text('Enter Valid Mobile Number').show;
-                return false;
-            }
-
-
-            if ($('#txtPassWord').val() != $('#cnfPassWord')) {
-                $('#lblMessage').text('Passwords didnt match').show;
-                return false;
-            }
-
-        }
-    </script>*@
-
+       
+    </script>
 
 </body>
 </html>

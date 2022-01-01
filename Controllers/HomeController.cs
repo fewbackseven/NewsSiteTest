@@ -18,14 +18,11 @@ namespace NewsSiteTest.Controllers
         }
 
         public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+        {           
+            return View("About");
         }
 
-        [HttpPost]
-        [AllowAnonymous]
+        [HttpPost]        
         public ActionResult About(CheckSignIn objUserData)
         {
             DataTable dtUserData = new DataTable();
@@ -33,29 +30,59 @@ namespace NewsSiteTest.Controllers
             bool sResult;
             sResult = objCreateUser.CreateUser(objUserData);
 
-            if (sResult)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                ViewBag.ResultMsg = "Could not create User. Please enter the correct Details";
-                return View();
-            }
-
+            return RedirectToAction("Contact");
         }
 
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
 
+            return View("Contact");
+        }
+
+        public ActionResult SignUp()
+        {
             return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult SignUp(CheckSignIn objUserData)
+        {
+            DataTable dtUserData = new DataTable();
+            CheckSignIn objCreateUser = new CheckSignIn();
+            bool sResult;
+
+           
+
+            if (objUserData.sPassWord == objUserData.sCnfPassWord)
+            {
+                sResult = objCreateUser.CreateUser(objUserData);
+
+                if (sResult)
+                    return RedirectToAction("Index");
+                else
+                    return View();
+            }else
+            {
+                
+                return View();
+            }
         }
 
         public ActionResult Login()
         {
             return View();
         }
+
+        //List<string> findLanguage()
+        //{
+        //    string Language = "KN";
+        //    if (Language == "KN")
+        //    {
+        //        _name = "ಪೂರ್ಣ ಹೆಸರು";
+        //    }
+        //}
 
     }
 }
